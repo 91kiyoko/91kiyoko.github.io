@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miku Gallery</title>
+    <style>
+        body { margin: 0; background-color: #0a192f; color: white; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 50px 20px; }
+        h1 { color: #39c5bb; text-shadow: 0 0 10px rgba(57, 197, 187, 0.5); margin-bottom: 30px; font-size: 2.5rem; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1000px; width: 100%; }
+        .card { background: rgba(255,255,255,0.05); border-radius: 15px; padding: 15px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; backdrop-filter: blur(10px); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 0 20px rgba(57, 197, 187, 0.4); }
+        .card img { width: 100%; border-radius: 10px; transition: transform 0.3s; }
+        .card:hover img { transform: scale(1.05); }
+        .back-btn { margin-top: 40px; padding: 12px 30px; background: #39c5bb; color: #000; text-decoration: none; border-radius: 30px; font-weight: bold; transition: 0.3s; }
+        .back-btn:hover { box-shadow: 0 0 15px #39c5bb; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <h1>✨ Miku Gallery ✨</h1>
+    <div class="gallery-grid">
+        <div class="card"><img src="miku.png.webp" alt="Miku 1"></div>
+        <div class="card"><img src="miku1.png" alt="Miku 2"></div>
+        <div class="card"><img src="miku3.png" alt="Miku 3"></div>
+        <div class="card"><img src="miku4.png" alt="Miku 4"></div>
+    </div>
+    <a href="index.html" class="back-btn">返回首页</a>
+</body>
+</html>
+
