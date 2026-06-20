@@ -3,192 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miku's Space</title>
+    <title>Miku Cyber Space | 91kiyoko</title>
     <style>
-        /* --- 基础样式 --- */
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #0d1b2a; /* 深蓝色背景 */
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
-            height: 100vh;
-            overflow: hidden; /* 防止滚动条出现 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        :root { --miku-green: #39c5bb; --miku-dark: #0a192f; --glass-bg: rgba(255, 255, 255, 0.05); --glass-border: rgba(255, 255, 255, 0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--miku-dark); color: #fff; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; cursor: none; }
 
-        /* --- 粒子画布 (背景) --- */
-        #particle-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* 放在最底层 */
-        }
+        /* 1. 全屏粒子背景 */
+        #cyber-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
-        /* --- 主容器 (玻璃拟态效果) --- */
-        .container {
-            position: relative;
-            z-index: 2; /* 放在粒子层上面 */
-            background: rgba(255, 255, 255, 0.1); /* 半透明白色 */
-            backdrop-filter: blur(10px); /* 磨砂玻璃模糊效果 */
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            max-width: 90%;
-            width: 400px;
-            animation: float 6s ease-in-out infinite; /* 添加悬浮动画 */
-        }
+        /* 2. 鼠标追踪光效 */
+        .cursor-glow { position: fixed; width: 300px; height: 300px; background: radial-gradient(circle, rgba(57,197,187,0.15) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 1; transition: opacity 0.3s; }
 
-        /* --- 图片样式 --- */
-        .avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%; /* 圆形头像 */
-            border: 4px solid #39c5bb; /* 初音绿边框 */
-            object-fit: cover;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(57, 197, 187, 0.6); /* 发光效果 */
-        }
+        /* 3. 多区块滚动容器 */
+        .scroll-container { position: relative; z-index: 2; scroll-behavior: smooth; }
+        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 50px 20px; position: relative; }
 
-        h1 {
-            margin: 0;
-            font-size: 24px;
-            color: #39c5bb;
-            text-shadow: 0 0 10px rgba(57, 197, 187, 0.5);
-        }
+        /* 4. 玻璃拟态卡片 */
+        .glass-card { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px; max-width: 600px; width: 100%; text-align: center; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); animation: floatUp 1s ease-out forwards; opacity: 0; transform: translateY(30px); }
+        .glass-card.visible { opacity: 1; transform: translateY(0); }
 
-        p {
-            margin-top: 10px;
-            color: #e0e0e0;
-            line-height: 1.6;
-        }
+        /* 5. 头像与文字特效 */
+        .miku-avatar { width: 160px; height: 160px; border-radius: 50%; border: 3px solid var(--miku-green); box-shadow: 0 0 20px rgba(57, 197, 187, 0.4); margin-bottom: 20px; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .miku-avatar:hover { transform: scale(1.1) rotate(5deg); }
+        h1 { font-size: 2.5rem; color: var(--miku-green); margin-bottom: 10px; text-shadow: 0 0 10px rgba(57, 197, 187, 0.5); }
+        .typewriter { font-size: 1.2rem; color: #a0a0a0; min-height: 1.5em; }
 
-        /* --- 简单的上下浮动动画 --- */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
+        /* 6. 按钮样式 */
+        .btn-link { display: inline-block; padding: 12px 30px; background: var(--miku-green); color: #000; text-decoration: none; border-radius: 30px; font-weight: bold; transition: 0.3s; margin-top: 10px; }
+        .btn-link:hover { box-shadow: 0 0 20px var(--miku-green); transform: translateY(-2px); }
+
+        /* 7. 音乐播放器样式 */
+        .music-player { margin-top: 25px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .music-btn { background: none; border: 1px solid var(--miku-green); color: var(--miku-green); padding: 6px 15px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 14px; }
+        .music-btn:hover { background: var(--miku-green); color: #000; }
+        .music-title { font-size: 12px; color: #888; }
+
+        /* 8. 右侧导航点 */
+        .nav-dots { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10; display: flex; flex-direction: column; gap: 15px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s; }
+        .dot.active, .dot:hover { background: var(--miku-green); box-shadow: 0 0 10px var(--miku-green); transform: scale(1.3); }
+
+        /* 9. 看板娘预留位置 */
+        #live2d-container { position: fixed; bottom: 0; right: 0; width: 300px; height: 400px; z-index: 999; pointer-events: none; }
+
+        @keyframes floatUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .glass-card { padding: 30px 20px; }
+            .nav-dots { display: none; }
+            body { cursor: auto; }
+            .cursor-glow { display: none; }
         }
     </style>
 </head>
 <body>
+    <canvas id="cyber-canvas"></canvas>
+    <div class="cursor-glow" id="cursorGlow"></div>
 
-    <!-- 粒子背景画布 -->
-    <canvas id="particle-canvas"></canvas>
+    <nav class="nav-dots" id="navDots">
+        <div class="dot active" data-target="home"></div>
+        <div class="dot" data-target="about"></div>
+        <div class="dot" data-target="contact"></div>
+    </nav>
 
-    <!-- 内容卡片 -->
-    <div class="container">
-        <!-- 注意：这里假设你上传了一张叫 miku.png.webp 的图片 -->
-        <!-- 如果图片名字不同，请修改 src="..." 里的名字 -->
-        <img src="miku.png.webp" alt="Miku" class="avatar">
+    <div id="live2d-container"></div>
 
-        <h1>Welcome to Miku World</h1>
-        <p>
-            这里是初音未来的专属空间。<br>
-            连接网络，感受律动。<br>
-            Connecting... 100%
-        </p>
-    </div>
+    <main class="scroll-container">
+        <!-- 第一屏：首页 -->
+        <section id="home">
+            <div class="glass-card">
+                <img src="miku.png" alt="Miku" class="miku-avatar" onerror="this.src='https://upload.wikimedia.org/wikipedia/en/e/e3/Hatsune_Miku_V4X.png'">
+                <h1>91kiyoko</h1>
+                <div class="typewriter" id="typeText"></div>
+                
+                <!-- 🎵 音乐播放器 -->
+                <div class="music-player">
+                    <button class="music-btn" id="playBtn">▶ Play</button>
+                    <span class="music-title">♪ 妄想感傷代償聯盟-DECO*27(livetune)</span>
+                </div>
+                <audio id="bgMusic" loop preload="auto">
+                    <source src="妄想感伤代偿联盟.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </section>
+
+        <!-- 第二屏：关于 -->
+        <section id="about">
+            <div class="glass-card">
+                <h1>System Info</h1>
+                <p style="line-height:1.8; color:#ccc; margin-top:15px;">
+                    这是一个由代码与音符构建的次元空间。<br>
+                    在这里，数据流化作旋律，<br>
+                    每一次点击都是与未来的共鸣。
+                </p>
+                <a href="gallery.html" class="btn-link">进入画廊 Gallery</a>
+            </div>
+        </section>
+
+        <!-- 第三屏：联系 -->
+        <section id="contact">
+            <div class="glass-card">
+                <h1>Connect</h1>
+                <p style="margin:20px 0; color:#aaa;">准备建立神经连接...</p>
+                <a href="#" class="btn-link">Start Link</a>
+            </div>
+        </section>
+    </main>
 
     <script>
-        // --- 粒子特效脚本 ---
-        const canvas = document.getElementById('particle-canvas');
+        // --- 1. 粒子风暴系统 ---
+        const canvas = document.getElementById('cyber-canvas');
         const ctx = canvas.getContext('2d');
+        let w, h, particles = [];
+        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
 
-        let particlesArray;
-
-        // 设置画布大小
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        // 处理窗口大小改变
-        window.addEventListener('resize', function(){
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        });
-
-        // 粒子类
         class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1; // 粒子大小
-                this.speedX = Math.random() * 1.5 - 0.75; // 水平速度
-                this.speedY = Math.random() * 1.5 - 0.75; // 垂直速度
-                this.color = '#39c5bb'; // 初音绿
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                // 碰到边缘反弹
-                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
-                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            constructor() { this.reset(); }
+            reset() { this.x = Math.random() * w; this.y = Math.random() * h; this.vx = (Math.random() - 0.5) * 1.5; this.vy = (Math.random() - 0.5) * 1.5; this.size = Math.random() * 2; }
+            update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset(); }
+            draw() { ctx.fillStyle = '#39c5bb'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
+        for (let i = 0; i < 120; i++) particles.push(new Particle());
 
-        // 初始化粒子群
-        function init() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 9000; // 根据屏幕面积决定粒子数量
-            for (let i = 0; i < numberOfParticles; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
-
-        // 连线逻辑
-        function connect() {
-            let opacityValue = 1;
-            for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a; b < particlesArray.length; b++) {
-                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
-                                 + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-
-                    // 如果两个粒子距离足够近，就画线
-                    if (distance < (canvas.width/7) * (canvas.height/7)) {
-                        opacityValue = 1 - (distance / 20000);
-                        ctx.strokeStyle = 'rgba(57, 197, 187,' + opacityValue + ')';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                        ctx.stroke();
-                    }
+        function animateParticles() {
+            ctx.clearRect(0, 0, w, h);
+            particles.forEach(p => { p.update(); p.draw(); });
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) { ctx.strokeStyle = `rgba(57, 197, 187, ${1 - dist / 120})`; ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); }
                 }
             }
+            requestAnimationFrame(animateParticles);
         }
+        animateParticles();
 
-        // 动画循环
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // --- 2. 鼠标光效追踪 ---
+        const glow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', e => { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; });
 
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
-            connect();
-        }
+        // --- 3. 打字机特效 ---
+        const text = "Welcome to the Cyber World. 39!";
+        const typeEl = document.getElementById('typeText');
+        let idx = 0;
+        function typeWriter() { if (idx < text.length) { typeEl.textContent += text.charAt(idx); idx++; setTimeout(typeWriter, 80); } }
+        setTimeout(typeWriter, 800);
 
-        // 启动
-        init();
-        animate();
+        // --- 4. 音乐播放控制 ---
+        const bgMusic = document.getElementById('bgMusic');
+        const playBtn = document.getElementById('playBtn');
+        playBtn.addEventListener('click', () => {
+            if (bgMusic.paused) { bgMusic.play(); playBtn.textContent = '⏸ Pause'; }
+            else { bgMusic.pause(); playBtn.textContent = '▶ Play'; }
+        });
+
+        // --- 5. 滚动监听与卡片入场 ---
+        const cards = document.querySelectorAll('.glass-card');
+        const dots = document.querySelectorAll('.dot');
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    const id = entry.target.id;
+                    dots.forEach(d => d.classList.remove('active'));
+                    document.querySelector(`.dot[data-target="${id}"]`)?.classList.add('active');
+                }
+            });
+        }, { threshold: 0.5 });
+        cards.forEach(card => observer.observe(card));
+        sections.forEach(sec => observer.observe(sec));
+        dots.forEach(dot => { dot.addEventListener('click', () => { document.getElementById(dot.dataset.target)?.scrollIntoView({ behavior: 'smooth' }); }); });
     </script>
 </body>
 </html>
