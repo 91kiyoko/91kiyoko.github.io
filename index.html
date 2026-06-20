@@ -3,33 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的 Miku 空间</title>
+    <title>Miku's Space</title>
     <style>
+        /* --- 基础样式 --- */
         body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0; padding: 0;
-            /* 初音经典的青绿色渐变背景 */
-            background: linear-gradient(135deg, #39c5bb 0%, #003366 100%); 
+            margin: 0;
+            padding: 0;
+            background-color: #0d1b2a; /* 深蓝色背景 */
             color: white;
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; text-align: center;
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
+            overflow: hidden; /* 防止滚动条出现 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
+        /* --- 粒子画布 (背景) --- */
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* 放在最底层 */
+        }
+
+        /* --- 主容器 (玻璃拟态效果) --- */
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 40px; border-radius: 15px;
-            backdrop-filter: blur(10px); /* 毛玻璃特效 */
-            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            z-index: 2; /* 放在粒子层上面 */
+            background: rgba(255, 255, 255, 0.1); /* 半透明白色 */
+            backdrop-filter: blur(10px); /* 磨砂玻璃模糊效果 */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            max-width: 90%;
+            width: 400px;
+            animation: float 6s ease-in-out infinite; /* 添加悬浮动画 */
         }
-        h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 0 0 10px #39c5bb; }
-        p { font-size: 1.2em; opacity: 0.9; }
+
+        /* --- 图片样式 --- */
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%; /* 圆形头像 */
+            border: 4px solid #39c5bb; /* 初音绿边框 */
+            object-fit: cover;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(57, 197, 187, 0.6); /* 发光效果 */
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #39c5bb;
+            text-shadow: 0 0 10px rgba(57, 197, 187, 0.5);
+        }
+
+        p {
+            margin-top: 10px;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        /* --- 简单的上下浮动动画 --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
     </style>
 </head>
 <body>
+
+    <!-- 粒子背景画布 -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- 内容卡片 -->
     <div class="container">
-        <h1>🎵 39! Miku Space</h1>
-        <p>欢迎来到我的初音未来专属数字空间！</p>
-        <p>把世界唱给你听~</p>
+        <!-- 注意：这里假设你上传了一张叫 miku.png 的图片 -->
+        <!-- 如果图片名字不同，请修改 src="..." 里的名字 -->
+        <img src="miku.png" alt="Miku" class="avatar">
+
+        <h1>Welcome to Miku World</h1>
+        <p>
+            这里是初音未来的专属空间。<br>
+            连接网络，感受律动。<br>
+            Connecting... 100%
+        </p>
     </div>
+
+    <script>
+        // --- 粒子特效脚本 ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particlesArray;
+
+        // 设置画布大小
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // 处理窗口大小改变
+        window.addEventListener('resize', function(){
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+
+        // 粒子类
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1; // 粒子大小
+                this.speedX = Math.random() * 1.5 - 0.75; // 水平速度
+                this.speedY = Math.random() * 1.5 - 0.75; // 垂直速度
+                this.color = '#39c5bb'; // 初音绿
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // 碰到边缘反弹
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // 初始化粒子群
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000; // 根据屏幕面积决定粒子数量
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        // 连线逻辑
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                                 + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+
+                    // 如果两个粒子距离足够近，就画线
+                    if (distance < (canvas.width/7) * (canvas.height/7)) {
+                        opacityValue = 1 - (distance / 20000);
+                        ctx.strokeStyle = 'rgba(57, 197, 187,' + opacityValue + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // 动画循环
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            connect();
+        }
+
+        // 启动
+        init();
+        animate();
+    </script>
 </body>
 </html>
 
