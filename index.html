@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Miku Cyber Space | 91kiyoko</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+SC:wght@300;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,12 +28,30 @@
             min-height: 100vh;
         }
 
+        /* 优化背景：多层渐变 + 网格 */
         #canvas-bg {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at center, #1a2a3a 0%, #050b14 100%);
+            background: 
+                linear-gradient(rgba(5, 11, 20, 0.8), rgba(5, 11, 20, 0.4)),
+                radial-gradient(ellipse at 20% 80%, rgba(188, 19, 254, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 243, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at center, #1a2a3a 0%, #050b14 100%);
+        }
+
+        /* 添加网格背景 */
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
         }
 
         .container {
@@ -167,54 +185,81 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
+        /* 音乐播放器：改为底部通栏，避免遮挡 */
         .music-player {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 300px;
-            background: rgba(10, 15, 30, 0.9);
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: rgba(10, 15, 30, 0.95);
             backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 15px;
+            border-top: 1px solid var(--glass-border);
+            padding: 12px 20px;
             z-index: 100;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             gap: 15px;
-            transition: transform 0.3s;
-        }
-
-        .music-player:hover {
-            transform: scale(1.02);
-            border-color: var(--primary);
         }
 
         .album-art {
-            width: 50px; height: 50px;
+            width: 45px; height: 45px;
             border-radius: 50%;
             background: url('miku.png.webp') center/cover;
             animation: spin 10s linear infinite;
             animation-play-state: paused;
             border: 2px solid var(--primary);
+            flex-shrink: 0;
         }
 
-        .music-info { flex: 1; overflow: hidden; }
-        .song-title { font-size: 0.9rem; font-weight: bold; white-space: nowrap; color: var(--primary); }
-        .artist { font-size: 0.7rem; color: var(--text-sub); }
+        .music-info { 
+            flex: 1; 
+            overflow: hidden;
+            min-width: 0;
+        }
+        .song-title { 
+            font-size: 0.9rem; 
+            font-weight: bold; 
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--primary); 
+        }
+        .artist { 
+            font-size: 0.7rem; 
+            color: var(--text-sub); 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         .controls i {
             cursor: pointer;
             color: #fff;
-            margin-left: 10px;
+            margin-left: 15px;
             transition: color 0.2s;
+            font-size: 1.2rem;
         }
         .controls i:hover { color: var(--primary); }
 
-        .visualizer { display: flex; align-items: flex-end; gap: 2px; height: 20px; margin-top: 5px; }
-        .bar { width: 3px; background: var(--secondary); animation: equalize 1s infinite; }
+        .visualizer { 
+            display: flex; 
+            align-items: flex-end; 
+            gap: 3px; 
+            height: 25px;
+        }
+        .bar { 
+            width: 4px; 
+            background: var(--secondary); 
+            animation: equalize 1s infinite;
+            border-radius: 2px;
+        }
 
-        .gallery-section { margin-top: 50px; margin-bottom: 100px; }
+        .gallery-section { 
+            margin-top: 50px; 
+            margin-bottom: 120px; 
+        }
 
         .section-title {
             font-family: 'Orbitron';
@@ -270,22 +315,89 @@
 
         @keyframes equalize {
             0%, 100% { height: 5px; }
-            50% { height: 20px; }
+            50% { height: 25px; }
         }
 
+        /* 响应式调整 */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
-            .hero { flex-direction: column-reverse; text-align: center; }
-            .hero-text { padding-right: 0; margin-top: 30px; }
-            .typewriter { border-left: none; border-bottom: 3px solid var(--primary); padding-bottom: 10px; padding-left: 0; }
-            .cta-buttons { justify-content: center; }
-            .music-player { width: 90%; right: 5%; bottom: 20px; }
+            .hero { 
+                flex-direction: column-reverse; 
+                text-align: center; 
+                min-height: auto;
+                padding: 30px 0;
+            }
+            .hero-text { 
+                padding-right: 0; 
+                margin-top: 30px; 
+            }
+            .typewriter { 
+                border-left: none; 
+                border-bottom: 3px solid var(--primary); 
+                padding-bottom: 10px; 
+                padding-left: 0; 
+            }
+            .cta-buttons { 
+                justify-content: center; 
+                flex-wrap: wrap;
+            }
+            
+            /* 音乐播放器移动端优化 */
+            .music-player {
+                padding: 10px 15px;
+            }
+            .album-art {
+                width: 40px; height: 40px;
+            }
+            .visualizer {
+                display: none;
+            }
+            .controls i {
+                margin-left: 10px;
+                font-size: 1rem;
+            }
+            
+            /* 画廊底部留更多空间 */
+            .gallery-section {
+                margin-bottom: 100px;
+            }
+            
+            /* 卡片全宽 */
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            /* 看板娘位置调整 */
+            #waifu {
+                transform: scale(0.7) !important;
+                right: -40px !important;
+                bottom: 70px !important;
+            }
+        }
+
+        /* 超小屏幕 */
+        @media (max-width: 380px) {
+            .logo {
+                font-size: 1.2rem;
+            }
+            .status-badge {
+                font-size: 0.7rem;
+                padding: 4px 10px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
 
     <canvas id="canvas-bg"></canvas>
+    <div class="grid-overlay"></div>
 
     <div class="container">
         <header>
