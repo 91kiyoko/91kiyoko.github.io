@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miku Cyber Space | 91kiyoko</title>
-    <!-- 引入字体与图标库 -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+SC:wght@300;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ==================== 核心 CSS 变量 ==================== */
         :root {
             --primary: #00f3ff; 
             --secondary: #bc13fe; 
@@ -30,7 +28,6 @@
             min-height: 100vh;
         }
 
-        /* ==================== 动态背景 Canvas ==================== */
         #canvas-bg {
             position: fixed;
             top: 0; left: 0;
@@ -39,7 +36,6 @@
             background: radial-gradient(circle at center, #1a2a3a 0%, #050b14 100%);
         }
 
-        /* ==================== 布局容器 ==================== */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -48,7 +44,6 @@
             z-index: 1;
         }
 
-        /* ==================== 头部导航 ==================== */
         header {
             display: flex;
             justify-content: space-between;
@@ -85,7 +80,6 @@
             animation: pulse 1.5s infinite;
         }
 
-        /* ==================== Hero 区域 ==================== */
         .hero {
             display: flex;
             align-items: center;
@@ -173,7 +167,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* ==================== 音乐播放器组件 ==================== */
         .music-player {
             position: fixed;
             bottom: 30px;
@@ -221,7 +214,6 @@
         .visualizer { display: flex; align-items: flex-end; gap: 2px; height: 20px; margin-top: 5px; }
         .bar { width: 3px; background: var(--secondary); animation: equalize 1s infinite; }
 
-        /* ==================== 画廊区域 ==================== */
         .gallery-section { margin-top: 50px; margin-bottom: 100px; }
 
         .section-title {
@@ -263,7 +255,6 @@
         .card-title { font-size: 1.1rem; margin-bottom: 5px; color: #fff; }
         .card-desc { font-size: 0.8rem; color: var(--text-sub); }
 
-        /* ==================== 动画关键帧 ==================== */
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.7); }
             70% { box-shadow: 0 0 0 10px rgba(0, 243, 255, 0); }
@@ -282,7 +273,6 @@
             50% { height: 20px; }
         }
 
-        /* 响应式调整 */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             .hero { flex-direction: column-reverse; text-align: center; }
@@ -295,11 +285,9 @@
 </head>
 <body>
 
-    <!-- 动态背景 Canvas -->
     <canvas id="canvas-bg"></canvas>
 
     <div class="container">
-        <!-- 头部 -->
         <header>
             <div class="logo"><i class="fas fa-cube"></i> MIKU.SPACE</div>
             <div class="status-badge">
@@ -308,7 +296,6 @@
             </div>
         </header>
 
-        <!-- 首屏 Hero -->
         <section class="hero">
             <div class="hero-text">
                 <h1>CYBER<br>DIVA 39</h1>
@@ -332,7 +319,6 @@
             </div>
         </section>
 
-        <!-- 画廊区域 -->
         <section class="gallery-section">
             <h2 class="section-title">VISUAL MEMORY BANK</h2>
             <div class="grid">
@@ -357,7 +343,6 @@
                         <p class="card-desc">Audio synthesis complete.</p>
                     </div>
                 </div>
-                <!-- 额外数据卡片 -->
                 <div class="card" style="display: flex; align-items: center; justify-content: center; background: rgba(0, 243, 255, 0.05); border-style: dashed;">
                     <div style="text-align: center;">
                         <i class="fas fa-plus-circle" style="font-size: 3rem; color: var(--primary); margin-bottom: 10px;"></i>
@@ -368,7 +353,6 @@
         </section>
     </div>
 
-    <!-- 悬浮音乐播放器 -->
     <div class="music-player">
         <div class="album-art" id="albumArt"></div>
         <div class="music-info">
@@ -387,14 +371,11 @@
         </div>
     </div>
 
-    <!-- 隐藏的音频元素 -->
     <audio id="bgm" loop>
         <source src="妄想感伤代偿联盟.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- 核心脚本逻辑 -->
     <script>
-        /* ==================== 1. Canvas 动态粒子背景 ==================== */
         const canvas = document.getElementById('canvas-bg');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -473,10 +454,9 @@
         }
         animateCanvas();
 
-                /* ==================== 2. 打字机特效 ==================== */
         const textElement = document.getElementById('typing-text');
         const texts = [
-            "Welcome to the miku World!",
+            "Welcome to the Cyber World. 39!",
             "Loading Miku Modules...",
             "Connecting to Vocaloid Database...",
             "Ready to Dance."
@@ -506,7 +486,6 @@
         }
         typeEffect();
 
-        /* ==================== 3. 音乐播放控制 ==================== */
         const bgm = document.getElementById('bgm');
         const playIcon = document.getElementById('playIcon');
         const albumArt = document.getElementById('albumArt');
@@ -525,66 +504,10 @@
             isPlaying = !isPlaying;
         }
 
-        /* ==================== 4. Live2D 看板娘加载 ==================== */
-        // 动态加载 L2Dwidget 脚本
         const l2dScript = document.createElement('script');
-        l2dScript.src = 'https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js';
-        l2dScript.onload = function() {
-            // 等待 autoload.js 加载完成后，进行自定义配置
-            // 注意：autoload.js 会自动初始化，这里我们通过全局变量覆盖配置
-            if (window.initWidget) {
-                // 如果 autoload 没有自动初始化，我们可以手动调用
-                // 但通常 autoload 会自动处理，我们通过修改默认配置来增强功能
-            }
-        };
+        l2dScript.src = 'https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.1/dist/autoload.js';
         document.head.appendChild(l2dScript);
 
-        // 自定义 Live2D 配置 (覆盖默认设置)
-        // 这些配置会在 autoload.js 执行后生效
-        window.live2d_settings = {
-            model: {
-                // 内置多个模型，随机加载或指定加载
-                // 这里使用经典的 shizuku 模型，稳定且兼容性好
-                jsonPath: "https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/shizuku/shizuku.model.json",
-                scale: 1,
-                hHeadPos: 0.5,
-                vHeadPos: 0.618,
-                hBodyPos: 0.5,
-                vBodyPos: 0.618,
-            },
-            display: {
-                position: "right", // left / right
-                width: 280,
-                height: 250,
-                hOffset: 10,
-                vOffset: -20,
-            },
-            mobile: {
-                show: true, // 移动端也显示
-                scale: 0.8,
-            },
-            react: {
-                opacityDefault: 0.9,
-                opacityOnHover: 1,
-            },
-            // 自定义提示语
-            tips: {
-                mouseover: [
-                    { selector: ".logo", text: "点击返回首页~" },
-                    { selector: ".btn-primary", text: "要开始播放音乐了吗？" },
-                    { selector: ".card", text: "这张图很有感觉呢！" },
-                    { selector: "#canvas-bg", text: "背景粒子在跳舞哦~" }
-                ],
-                click: [
-                    { selector: ".hero-card img", text: "不要乱摸啦！(*/ω＼*)" },
-                    { selector: ".status-badge", text: "系统运行正常，请放心~" }
-                ],
-                seasonal: true, // 节日提示
-                copy: true      // 复制提示
-            }
-        };
-
-        /* ==================== 5. 画廊卡片入场动画 ==================== */
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -601,7 +524,6 @@
             observer.observe(card);
         });
 
-        /* ==================== 6. 控制台彩蛋 ==================== */
         console.log(
             "%c MIKU CYBER SPACE %c 91kiyoko ",
             "background: #00f3ff; color: #000; font-size: 14px; padding: 5px 10px; border-radius: 4px 0 0 4px;",
@@ -609,3 +531,7 @@
         );
         console.log("🎵 BGM: 妄想感傷代償連盟 - DECO*27");
         console.log("🤖 Live2D Model: Shizuku (Custom Config)");
+    </script>
+</body>
+</html>
+
