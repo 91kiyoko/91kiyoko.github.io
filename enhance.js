@@ -574,7 +574,7 @@
             <div class="about-content">
                 <p>这里可以写下你的自我介绍...</p>
                 <p>比如：喜欢miku / 设计师 / 创作者</p>
-                <p>喜欢二次元awa、Vocaloid 音乐、QQ:2701883816😋</p>
+                <p>喜欢二次元awa、Vocaloid 音乐、QQ:2701873816😋</p>
             </div>
             <div class="about-stats">
                 <div class="stat-item">
