@@ -946,5 +946,3 @@
 
     init();
 })();
-print("✅ enhance.js v4.0 完整版已保存！")
-print(f"文件大小: {len(part1)} 字符")
