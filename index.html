@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+
+# 创建更新版 index.html
+updated_html = '''<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -28,12 +30,12 @@
             min-height: 100vh;
         }
 
-        /* 优化背景：多层渐变 + 网格 */
+        /* 基础背景层 */
         #canvas-bg {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: -1;
+            z-index: -3;
             background: 
                 linear-gradient(rgba(5, 11, 20, 0.8), rgba(5, 11, 20, 0.4)),
                 radial-gradient(ellipse at 20% 80%, rgba(188, 19, 254, 0.15) 0%, transparent 50%),
@@ -41,15 +43,15 @@
                 radial-gradient(circle at center, #1a2a3a 0%, #050b14 100%);
         }
 
-        /* 添加网格背景 */
+        /* 网格背景 */
         .grid-overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1;
             background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(0, 243, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.02) 1px, transparent 1px);
             background-size: 50px 50px;
             pointer-events: none;
         }
@@ -69,6 +71,8 @@
             padding: 20px 0;
             border-bottom: 1px solid var(--glass-border);
             backdrop-filter: blur(5px);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .logo {
@@ -77,6 +81,8 @@
             font-weight: 700;
             color: var(--primary);
             text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            cursor: pointer;
+            user-select: none;
         }
 
         .status-badge {
@@ -89,6 +95,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .status-dot {
@@ -132,7 +139,7 @@
             min-height: 1.5em;
         }
 
-        .cta-buttons { display: flex; gap: 20px; }
+        .cta-buttons { display: flex; gap: 20px; flex-wrap: wrap; }
 
         .btn {
             padding: 12px 30px;
@@ -150,7 +157,6 @@
             color: #000;
             box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
         }
-
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
@@ -161,7 +167,6 @@
             border: 1px solid var(--secondary);
             color: var(--secondary);
         }
-
         .btn-outline:hover {
             background: var(--secondary);
             color: #fff;
@@ -185,7 +190,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* 音乐播放器：改为底部通栏，避免遮挡 */
+        /* 音乐播放器 */
         .music-player {
             position: fixed;
             bottom: 0;
@@ -282,19 +287,16 @@
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         .card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 243, 255, 0.2);
             border-color: var(--primary);
         }
-
         .card img {
             width: 100%; height: 200px;
             object-fit: cover;
             transition: transform 0.5s;
         }
-
         .card:hover img { transform: scale(1.1); }
         .card-body { padding: 15px; }
         .card-title { font-size: 1.1rem; margin-bottom: 5px; color: #fff; }
@@ -305,20 +307,17 @@
             70% { box-shadow: 0 0 0 10px rgba(0, 243, 255, 0); }
             100% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); }
         }
-
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
         }
-
         @keyframes spin { 100% { transform: rotate(360deg); } }
-
         @keyframes equalize {
             0%, 100% { height: 5px; }
             50% { height: 25px; }
         }
 
-        /* 响应式调整 */
+        /* 响应式 */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             .hero { 
@@ -327,70 +326,27 @@
                 min-height: auto;
                 padding: 30px 0;
             }
-            .hero-text { 
-                padding-right: 0; 
-                margin-top: 30px; 
-            }
+            .hero-text { padding-right: 0; margin-top: 30px; }
             .typewriter { 
                 border-left: none; 
                 border-bottom: 3px solid var(--primary); 
                 padding-bottom: 10px; 
                 padding-left: 0; 
             }
-            .cta-buttons { 
-                justify-content: center; 
-                flex-wrap: wrap;
-            }
-            
-            /* 音乐播放器移动端优化 */
-            .music-player {
-                padding: 10px 15px;
-            }
-            .album-art {
-                width: 40px; height: 40px;
-            }
-            .visualizer {
-                display: none;
-            }
-            .controls i {
-                margin-left: 10px;
-                font-size: 1rem;
-            }
-            
-            /* 画廊底部留更多空间 */
-            .gallery-section {
-                margin-bottom: 100px;
-            }
-            
-            /* 卡片全宽 */
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            /* 看板娘位置调整 */
-            #waifu {
-                transform: scale(0.7) !important;
-                right: -40px !important;
-                bottom: 70px !important;
-            }
+            .cta-buttons { justify-content: center; }
+            .music-player { padding: 10px 15px; }
+            .album-art { width: 40px; height: 40px; }
+            .visualizer { display: none; }
+            .controls i { margin-left: 10px; font-size: 1rem; }
+            .gallery-section { margin-bottom: 100px; }
+            .grid { grid-template-columns: 1fr; }
+            #waifu { transform: scale(0.7) !important; right: -40px !important; bottom: 70px !important; }
         }
-
-        /* 超小屏幕 */
-        @media (max-width: 380px) {
-            .logo {
-                font-size: 1.2rem;
-            }
-            .status-badge {
-                font-size: 0.7rem;
-                padding: 4px 10px;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            .btn {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-            }
+        @media (max-width: 480px) {
+            .logo { font-size: 1.2rem; }
+            .status-badge { font-size: 0.7rem; padding: 4px 10px; }
+            h1 { font-size: 2rem; }
+            .btn { padding: 10px 20px; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -488,84 +444,7 @@
     </audio>
 
     <script>
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let mouse = { x: null, y: null };
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1 - 0.5;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(0, 243, 255, 0.5)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < 100; i++) {
-                particles.push(new Particle());
-            }
-        }
-        initParticles();
-
-        function connectParticles() {
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    let dx = particles[a].x - particles[b].x;
-                    let dy = particles[a].y - particles[b].y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < 100) {
-                        ctx.strokeStyle = `rgba(0, 243, 255, ${0.2 * (1 - distance / 100)})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function animateCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let p of particles) {
-                p.update();
-                p.draw();
-            }
-            connectParticles();
-            requestAnimationFrame(animateCanvas);
-        }
-        animateCanvas();
-
+        // 打字机效果
         const textElement = document.getElementById('typing-text');
         const texts = [
             "Welcome to the Cyber World. 39!",
@@ -574,76 +453,55 @@
             "Ready to Dance."
         ];
         let textIndex = 0, charIndex = 0, isDeleting = false;
-
         function typeEffect() {
             const currentText = texts[textIndex];
-            if (isDeleting) {
-                textElement.textContent = currentText.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                textElement.textContent = currentText.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
+            if (isDeleting) { textElement.textContent = currentText.substring(0, charIndex - 1); charIndex--; }
+            else { textElement.textContent = currentText.substring(0, charIndex + 1); charIndex++; }
             let typeSpeed = isDeleting ? 50 : 100;
-            if (!isDeleting && charIndex === currentText.length) {
-                typeSpeed = 2000; 
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                textIndex = (textIndex + 1) % texts.length;
-                typeSpeed = 500;
-            }
+            if (!isDeleting && charIndex === currentText.length) { typeSpeed = 2000; isDeleting = true; }
+            else if (isDeleting && charIndex === 0) { isDeleting = false; textIndex = (textIndex + 1) % texts.length; typeSpeed = 500; }
             setTimeout(typeEffect, typeSpeed);
         }
         typeEffect();
 
+        // 音乐控制
         const bgm = document.getElementById('bgm');
         const playIcon = document.getElementById('playIcon');
         const albumArt = document.getElementById('albumArt');
         let isPlaying = false;
-
         function toggleMusic() {
-            if (isPlaying) {
-                bgm.pause();
-                playIcon.className = 'fas fa-play';
-                albumArt.style.animationPlayState = 'paused';
-            } else {
-                bgm.play().catch(e => console.log("Autoplay blocked, click to play."));
-                playIcon.className = 'fas fa-pause';
-                albumArt.style.animationPlayState = 'running';
-            }
+            if (isPlaying) { bgm.pause(); playIcon.className = 'fas fa-play'; albumArt.style.animationPlayState = 'paused'; }
+            else { bgm.play().catch(e => console.log("Autoplay blocked, click to play.")); playIcon.className = 'fas fa-pause'; albumArt.style.animationPlayState = 'running'; }
             isPlaying = !isPlaying;
         }
 
+        // Live2D
         const l2dScript = document.createElement('script');
         l2dScript.src = 'https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.1/dist/autoload.js';
         document.head.appendChild(l2dScript);
 
+        // 卡片入场动画
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
+                if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'all 0.6s ease-out';
+            card.style.opacity = '0'; card.style.transform = 'translateY(30px)'; card.style.transition = 'all 0.6s ease-out';
             observer.observe(card);
         });
 
-        console.log(
-            "%c MIKU CYBER SPACE %c 91kiyoko ",
-            "background: #00f3ff; color: #000; font-size: 14px; padding: 5px 10px; border-radius: 4px 0 0 4px;",
-            "background: #bc13fe; color: #fff; font-size: 14px; padding: 5px 10px; border-radius: 0 4px 4px 0;"
-        );
+        console.log("%c MIKU CYBER SPACE %c 91kiyoko ", "background: #00f3ff; color: #000; font-size: 14px; padding: 5px 10px; border-radius: 4px 0 0 4px;", "background: #bc13fe; color: #fff; font-size: 14px; padding: 5px 10px; border-radius: 0 4px 4px 0;");
         console.log("🎵 BGM: 妄想感傷代償連盟 - DECO*27");
         console.log("🤖 Live2D Model: Shizuku (Custom Config)");
     </script>
     <script src="enhance.js"></script>
 </body>
 </html>
+'''
+
+with open('/mnt/agents/output/index.html', 'w', encoding='utf-8') as f:
+    f.write(updated_html)
+
+print("✅ index.html 已更新！")
+print(f"文件大小: {len(updated_html)} 字符")
