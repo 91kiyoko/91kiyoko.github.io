@@ -1,5 +1,4 @@
-# 分段创建 enhance.js v4.0 - Part 1
-part1 = '''// enhance.js - 页面增强脚本 v4.0 (完整版)
+// enhance.js - 页面增强脚本 v4.0 (完整版)
 // 包含：背景升级、主题切换、访客墙、Miku语音、时间轴、访客计数、天气、彩蛋、音频可视化
 
 (function() {
@@ -947,10 +946,5 @@ part1 = '''// enhance.js - 页面增强脚本 v4.0 (完整版)
 
     init();
 })();
-'''
-
-with open('/mnt/agents/output/enhance.js', 'w', encoding='utf-8') as f:
-    f.write(part1)
-
 print("✅ enhance.js v4.0 完整版已保存！")
 print(f"文件大小: {len(part1)} 字符")
