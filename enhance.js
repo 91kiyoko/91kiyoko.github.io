@@ -1,4 +1,3 @@
-
 # 分段创建 enhance.js v4.0 - Part 1
 part1 = '''// enhance.js - 页面增强脚本 v4.0 (完整版)
 // 包含：背景升级、主题切换、访客墙、Miku语音、时间轴、访客计数、天气、彩蛋、音频可视化
@@ -411,22 +410,22 @@ part1 = '''// enhance.js - 页面增强脚本 v4.0 (完整版)
             <h2 class="timeline-title">TIMELINE // 成长轨迹</h2>
             <div class="timeline">
                 <div class="timeline-item">
-                    <div class="timeline-date">2024.06</div>
+                    <div class="timeline-date">2025.06</div>
                     <div class="timeline-content">🌱 初识前端开发</div>
                     <div class="timeline-desc">开始接触 HTML/CSS/JavaScript，被网页的魔力吸引</div>
                 </div>
                 <div class="timeline-item">
-                    <div class="timeline-date">2025.06.19</div>
+                    <div class="timeline-date">2025.06</div>
                     <div class="timeline-content">🎨 搭建 91kiyoko.github.io</div>
                     <div class="timeline-desc">创建个人主页，融入 Miku 元素</div>
                 </div>
                 <div class="timeline-item">
-                    <div class="timeline-date">2023.06</div>
+                    <div class="timeline-date">2020.06</div>
                     <div class="timeline-content">🎤 深入 Vocaloid 文化</div>
                     <div class="timeline-desc">收集 Miku 周边，认识更多同好</div>
                 </div>
                 <div class="timeline-item">
-                    <div class="timeline-date">2026.06.28</div>
+                    <div class="timeline-date">2026.01</div>
                     <div class="timeline-content">🚀 网站大升级</div>
                     <div class="timeline-desc">添加交互功能、小游戏、主题切换，打造真正的 Cyber Space</div>
                 </div>
